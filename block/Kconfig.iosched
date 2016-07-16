@@ -43,6 +43,10 @@ config IOSCHED_ROW
 	  according to queue priority.
 	  Most suitable for mobile devices.
 
+config IOSCHED_MAPLE
+	tristate "Maple I/O scheduler"
+	default y
+
 config IOSCHED_CFQ
 	tristate "CFQ I/O scheduler"
 	default y
@@ -153,6 +157,9 @@ choice
 	config DEFAULT_FIOPS
 		bool "FIOPS" if IOSCHED_FIOPS=y
 
+	config DEFAULT_MAPLE
+		bool "Maple" if IOSCHED_MAPLE=y
+
 	config DEFAULT_NOOP
 		bool "No-op"
 
@@ -174,6 +181,7 @@ config DEFAULT_IOSCHED
 	default "noop" if DEFAULT_NOOP
 	default "sioplus" if DEFAULT_SIOPLUS
 	default "zen" if DEFAULT_ZEN
+	default "maple" if DEFAULT_MAPLE
 
 endmenu
 
