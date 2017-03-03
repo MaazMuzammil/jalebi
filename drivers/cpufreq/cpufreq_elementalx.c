@@ -54,10 +54,6 @@ static unsigned int tblmap[TABLE_NUM][TABLE_SIZE] __read_mostly = {
 	     1248000,
 	     1363200,
 	     1401600,
-	     1497600,
-	     1593600,
-      	     1689600,
-	     1785600, 
 	},
 
 	//table 1
@@ -73,10 +69,6 @@ static unsigned int tblmap[TABLE_NUM][TABLE_SIZE] __read_mostly = {
 	     1248000,
 	     1363200,
 	     1401600,
-	     1497600,
-	     1593600,
-      	     1689600,
-	     1785600, 
 	},
 
 
@@ -86,7 +78,7 @@ static inline int get_cpu_freq_index(unsigned int freq, struct dbs_data *dbs_dat
 {
 	static int saved_index = 0;
 	int index;
-	
+
 	if (!dbs_data->freq_table) {
 		pr_warn("tbl is NULL, use previous value %d\n", saved_index);
 		return saved_index;
@@ -106,8 +98,8 @@ static inline unsigned int ex_freq_increase(struct cpufreq_policy *p, unsigned i
 {
 	if (freq > p->max) {
 		return p->max;
-	} 
-	
+	}
+
 	return freq;
 }
 
@@ -136,20 +128,20 @@ static void ex_check_cpu(int cpu, unsigned int load)
 				load > up_threshold_level[0]) {
 			freq_next = max_freq;
 		}
-		
+
 		else if (avg_load > up_threshold_level[0]) {
 			freq_next = tblmap[2 + ex_tuners->powersave][index];
 		}
-		
+
 		else if (avg_load <= up_threshold_level[1]) {
 			freq_next = tblmap[0 + ex_tuners->powersave][index];
 		}
-	
+
 		else {
 			if (load > up_threshold_level[0]) {
 				freq_next = tblmap[2 + ex_tuners->powersave][index];
 			}
-		
+
 			else {
 				freq_next = tblmap[1 + ex_tuners->powersave][index];
 			}
