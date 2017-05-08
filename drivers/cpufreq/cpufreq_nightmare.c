@@ -641,7 +641,7 @@ static void nightmare_check_cpu(struct cpufreq_nightmare_cpuinfo *this_nightmare
 	unsigned int next_freq = 0;
 	int cur_load = -1;
 	unsigned int cpu;
-	
+
 	cpu = this_nightmare_cpuinfo->cpu;
 	cpu_policy = this_nightmare_cpuinfo->cur_policy;
 
@@ -680,7 +680,7 @@ static void nightmare_check_cpu(struct cpufreq_nightmare_cpuinfo *this_nightmare
 		if (min_freq < cpu_policy->min)
 			min_freq = cpu_policy->min;*/
 		min_freq = cpu_policy->min;
-		max_freq = cpu_policy->max;		
+		max_freq = cpu_policy->max;
 		/* CPUs Online Scale Frequency*/
 		if (cpu_policy->cur < freq_for_responsiveness) {
 			inc_cpu_load = atomic_read(&nightmare_tuners_ins.inc_cpu_load_at_min_freq);
@@ -688,7 +688,7 @@ static void nightmare_check_cpu(struct cpufreq_nightmare_cpuinfo *this_nightmare
 			freq_up_brake = atomic_read(&nightmare_tuners_ins.freq_up_brake_at_min_freq);
 		} else if (cpu_policy->cur > freq_for_responsiveness_max) {
 			freq_step_dec = atomic_read(&nightmare_tuners_ins.freq_step_dec_at_max_freq);
-		}		
+		}
 		/* Check for frequency increase or for frequency decrease */
 #ifdef CONFIG_CPU_EXYNOS4210
 		if (cur_load >= inc_cpu_load && cpu_policy->cur < max_freq) {
@@ -807,13 +807,8 @@ static int cpufreq_governor_nightmare(struct cpufreq_policy *policy,
 		}
 
 		this_nightmare_cpuinfo->enable = 1;
-#ifdef CONFIG_CPU_EXYNOS4210
 		INIT_DEFERRABLE_WORK(&this_nightmare_cpuinfo->work, do_nightmare_timer);
 		mod_delayed_work_on(this_nightmare_cpuinfo->cpu, system_wq, &this_nightmare_cpuinfo->work, delay);
-#else
-		INIT_DELAYED_WORK_DEFERRABLE(&this_nightmare_cpuinfo->work, do_nightmare_timer);
-		queue_delayed_work_on(this_nightmare_cpuinfo->cpu, system_wq, &this_nightmare_cpuinfo->work, delay);
-#endif
 
 		break;
 
@@ -827,10 +822,9 @@ static int cpufreq_governor_nightmare(struct cpufreq_policy *policy,
 
 		if (!nightmare_enable) {
 			sysfs_remove_group(cpufreq_global_kobject,
-					   &nightmare_attr_group);			
+					   &nightmare_attr_group);
 		}
 		mutex_unlock(&nightmare_mutex);
-		
 		break;
 
 	case CPUFREQ_GOV_LIMITS:
