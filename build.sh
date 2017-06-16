@@ -1,8 +1,6 @@
 #!/bin/bash
 
 rm .version 2>/dev/null
-rm arch/arm/boot/dt.img
-rm arch/arm/boot/zImage
 
 # Bash colors
 green='\033[01;32m'
@@ -24,7 +22,7 @@ KERNEL_NAME="Caesium"
 VER="v0.1"
 VER="-$(date +"%Y%m%d"-"%H%M%S")-$VER"
 DEVICE="-jalebi"
-FINAL_VER="$KERNEL_NAME""$DEVICE""$VER"
+FINAL_VER="${KERNEL_NAME}""${DEVICE}""${VER}"
 
 # Vars
 export ARCH=arm
@@ -44,6 +42,7 @@ ZIMAGE_DIR="$KERNEL_DIR/arch/arm/boot"
 
 # Functions
 function make_kernel() {
+  rm arch/arm/boot/zImage
   [ "${CLEAN}" ] && make clean
   make "${DEFCONFIG}" "${THREAD}"
   if [ "${MODULE}" ]; then
@@ -55,6 +54,7 @@ function make_kernel() {
 }
 
 function make_dtb() {
+  rm arch/arm/boot/dt.img
   make dtbs "${THREAD}"
   "${KERNEL_DIR}/dtbToolCM" -2 -o "${KERNEL_DIR}/arch/arm/boot/dt.img" -s 2048 -p "${KERNEL_DIR}/scripts/dtc/" "${KERNEL_DIR}/arch/arm/boot/dts/"
   [ -f "${KERNEL_DIR}/arch/arm/boot/dt.img" ] && cp -vr "${KERNEL_DIR}/arch/arm/boot/dt.img" "${REPACK_DIR}/dtb" || exit 1
@@ -78,9 +78,9 @@ function upload_to_tg() {
     tg "${ZIP_MOVE}/${FINAL_VER}.zip"
 }
 
-function afh_upload() {
+function bb_upload() {
   cd "${ZIP_MOVE}"
-  wput ftp://${AFH_CREDENTIALS}@uploads.androidfilehost.com/ ${FINAL_VER}.zip
+  wput ftp://${BB_CREDENTIALS}@basketbuild.com/jalebi/Caesium-Test-Builds/ ${FINAL_VER}.zip
   cd ${KERNEL_DIR}
 }
 
@@ -100,8 +100,8 @@ while getopts ":ctabfm:" opt; do
       TG_UPLOAD=true
       ;;
     a)
-      echo -e "${cyan} Will upload build to AFH ${restore}" >&2
-      AFH_UPLOAD=true
+      echo -e "${cyan} Will upload build to BasketBuild ${restore}" >&2
+      BB_UPLOAD=true
       ;;
     b)
       echo -e "${cyan} Building ZIP only ${restore}" >&2
@@ -149,10 +149,10 @@ echo "------------------------------------------"
 echo -e "${restore}"
 
 DATE_END=$(date +"%s")
-DIFF=$(($DATE_END - $DATE_START))
+DIFF=$((${DATE_END} - ${DATE_START}))
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo " "
 
-[ "${AFH_UPLOAD}" ] && afh_upload
 [ "${TG_UPLOAD}" ] && upload_to_tg
 [ "${FLASH}" ] && push_and_flash
+[ "${BB_UPLOAD}" ] && bb_upload
