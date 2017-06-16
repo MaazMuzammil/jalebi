@@ -21,10 +21,10 @@ KERNEL="zImage"
 
 # Caesium Kernel Details
 KERNEL_NAME="Caesium"
-VER="v1.9"
+VER="v2.1"
 VER="-$(date +"%Y%m%d"-"%H%M%S")-$VER"
 DEVICE="-jalebi"
-FINAL_VER="$KERNEL_NAME""$DEVICE""$VER"
+FINAL_VER="${KERNEL_NAME}""${DEVICE}""${VER}"
 
 # Vars
 export ARCH=arm
@@ -78,9 +78,9 @@ function upload_to_tg() {
     tg "${ZIP_MOVE}/${FINAL_VER}.zip"
 }
 
-function afh_upload() {
+function bb_upload() {
   cd "${ZIP_MOVE}"
-  wput ftp://${AFH_CREDENTIALS}@uploads.androidfilehost.com/ ${FINAL_VER}.zip
+  wput ftp://${BB_CREDENTIALS}@basketbuild.com/jalebi/Caesium-Test-Builds/ ${FINAL_VER}.zip
   cd ${KERNEL_DIR}
 }
 
@@ -100,8 +100,8 @@ while getopts ":ctabfm:" opt; do
       TG_UPLOAD=true
       ;;
     a)
-      echo -e "${cyan} Will upload build to AFH ${restore}" >&2
-      AFH_UPLOAD=true
+      echo -e "${cyan} Will upload build to BasketBuild ${restore}" >&2
+      BB_UPLOAD=true
       ;;
     b)
       echo -e "${cyan} Building ZIP only ${restore}" >&2
@@ -149,10 +149,10 @@ echo "------------------------------------------"
 echo -e "${restore}"
 
 DATE_END=$(date +"%s")
-DIFF=$(($DATE_END - $DATE_START))
+DIFF=$((${DATE_END} - ${DATE_START}))
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo " "
 
-[ "${AFH_UPLOAD}" ] && afh_upload
+[ "${BB_UPLOAD}" ] && bb_upload
 [ "${TG_UPLOAD}" ] && upload_to_tg
 [ "${FLASH}" ] && push_and_flash
