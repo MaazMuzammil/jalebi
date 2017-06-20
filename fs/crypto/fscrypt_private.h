@@ -20,10 +20,6 @@
 #define FS_AES_256_CBC_KEY_SIZE		32
 #define FS_AES_256_CTS_KEY_SIZE		32
 #define FS_AES_256_XTS_KEY_SIZE		64
-#define FS_MAX_KEY_SIZE			64
-
-#define FS_KEY_DESC_PREFIX		"fscrypt:"
-#define FS_KEY_DESC_PREFIX_SIZE		8
 
 #define FS_KEY_DERIVATION_NONCE_SIZE		16
 
@@ -48,13 +44,6 @@ struct fscrypt_context {
 } __packed;
 
 #define FS_ENCRYPTION_CONTEXT_FORMAT_V1		1
-
-/* This is passed in from userspace into the kernel keyring */
-struct fscrypt_key {
-	u32 mode;
-	u8 raw[FS_MAX_KEY_SIZE];
-	u32 size;
-} __packed;
 
 /*
  * A pointer to this structure is stored in the file system's in-core
@@ -109,16 +98,6 @@ static inline void bio_set_op_attrs(struct bio *bio, unsigned op,
 		unsigned op_flags)
 {
 	bio->bi_rw = op | op_flags;
-}
-
-static inline struct inode *d_inode(const struct dentry *dentry)
-{
-	return dentry->d_inode;
-}
-
-static inline bool d_is_negative(const struct dentry *dentry)
-{
-	return (dentry->d_inode == NULL);
 }
 
 /* crypto.c */

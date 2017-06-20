@@ -234,7 +234,7 @@ enum {
 #define MAX_DISCARD_BLOCKS(sbi)		BLKS_PER_SEC(sbi)
 #define DISCARD_ISSUE_RATE		8
 #define DEF_CP_INTERVAL			60	/* 60 secs */
-#define DEF_IDLE_INTERVAL		5	/* 5 secs */
+#define DEF_IDLE_INTERVAL		120	/* 2 mins */
 
 struct cp_control {
 	int reason;
@@ -2289,6 +2289,7 @@ static inline int f2fs_add_link(struct dentry *dentry, struct inode *inode)
 /*
  * super.c
  */
+loff_t max_file_size(unsigned bits);
 int f2fs_inode_dirtied(struct inode *inode, bool sync);
 void f2fs_inode_synced(struct inode *inode);
 int f2fs_commit_super(struct f2fs_sb_info *sbi, bool recover);
@@ -2434,7 +2435,6 @@ void destroy_checkpoint_caches(void);
 /*
  * data.c
  */
-<<<<<<< HEAD
 void f2fs_submit_merged_bio(struct f2fs_sb_info *sbi, enum page_type type,
 			int rw);
 void f2fs_submit_merged_bio_cond(struct f2fs_sb_info *sbi,
@@ -2467,38 +2467,13 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map,
 int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
 			u64 start, u64 len);
 void f2fs_set_page_dirty_nobuffers(struct page *page);
-void f2fs_invalidate_page(struct page *page, unsigned long int offset);
+void f2fs_invalidate_page(struct page *page, unsigned int offset,
+			unsigned int length);
 int f2fs_release_page(struct page *page, gfp_t wait);
 #ifdef CONFIG_MIGRATION
 int f2fs_migrate_page(struct address_space *mapping, struct page *newpage,
 			struct page *page, enum migrate_mode mode);
 #endif
-=======
-void f2fs_submit_merged_bio(struct f2fs_sb_info *, enum page_type, int);
-void f2fs_submit_merged_bio_cond(struct f2fs_sb_info *, struct inode *,
-				struct page *, nid_t, enum page_type, int);
-void f2fs_flush_merged_bios(struct f2fs_sb_info *);
-int f2fs_submit_page_bio(struct f2fs_io_info *);
-void f2fs_submit_page_mbio(struct f2fs_io_info *);
-void set_data_blkaddr(struct dnode_of_data *);
-void f2fs_update_data_blkaddr(struct dnode_of_data *, block_t);
-int reserve_new_blocks(struct dnode_of_data *, blkcnt_t);
-int reserve_new_block(struct dnode_of_data *);
-int f2fs_get_block(struct dnode_of_data *, pgoff_t);
-ssize_t f2fs_preallocate_blocks(struct inode *, loff_t, size_t, bool);
-int f2fs_reserve_block(struct dnode_of_data *, pgoff_t);
-struct page *get_read_data_page(struct inode *, pgoff_t, int, bool);
-struct page *find_data_page(struct inode *, pgoff_t);
-struct page *get_lock_data_page(struct inode *, pgoff_t, bool);
-struct page *get_new_data_page(struct inode *, struct page *, pgoff_t, bool);
-int do_write_data_page(struct f2fs_io_info *);
-int f2fs_map_blocks(struct inode *, struct f2fs_map_blocks *, int, int);
-int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *, u64, u64);
-void f2fs_set_page_dirty_nobuffers(struct page *);
-void f2fs_invalidate_page(struct page *page, unsigned int offset,
-				      unsigned int length);
-int f2fs_release_page(struct page *, gfp_t);
->>>>>>> 56dd01a... f2fs: Adapt changes after 3.18 ext4 backport
 
 /*
  * gc.c
