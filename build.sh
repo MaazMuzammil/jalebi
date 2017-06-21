@@ -153,6 +153,6 @@ DIFF=$((${DATE_END} - ${DATE_START}))
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo " "
 
-[ "${BB_UPLOAD}" ] && bb_upload
 [ "${TG_UPLOAD}" ] && upload_to_tg
 [ "${FLASH}" ] && push_and_flash
+[ "${BB_UPLOAD}" ] && bb_upload
