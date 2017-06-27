@@ -43,9 +43,9 @@ void dbs_check_cpu(struct dbs_data *dbs_data, int cpu)
 	unsigned int j;
 
 	if (dbs_data->cdata->governor == GOV_ONDEMAND) {
-		ignore_nice = od_tuners->ignore_nice_load;
 		struct od_cpu_dbs_info_s *od_dbs_info =
 				dbs_data->cdata->get_cpu_dbs_info_s(cpu);
+		ignore_nice = od_tuners->ignore_nice_load;
 
 		/*
 		 * Sometimes, the ondemand governor uses an additional
