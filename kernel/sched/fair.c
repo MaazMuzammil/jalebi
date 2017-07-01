@@ -7575,8 +7575,6 @@ static inline int on_null_domain(int cpu)
  */
 void trigger_load_balance(struct rq *rq, int cpu)
 {
-	int type = NOHZ_KICK_ANY;
-
 	/* Don't need to rebalance while attached to NULL domain */
 	if (time_after_eq(jiffies, rq->next_balance) &&
 	    likely(!on_null_domain(cpu)))
