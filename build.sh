@@ -1,8 +1,6 @@
 #!/bin/bash
 
 rm .version 2>/dev/null
-rm arch/arm/boot/dt.img
-rm arch/arm/boot/zImage
 
 # Bash colors
 green='\033[01;32m'
@@ -44,6 +42,7 @@ ZIMAGE_DIR="$KERNEL_DIR/arch/arm/boot"
 
 # Functions
 function make_kernel() {
+  rm arch/arm/boot/zImage
   [ "${CLEAN}" ] && make clean
   make "${DEFCONFIG}" "${THREAD}"
   if [ "${MODULE}" ]; then
@@ -55,6 +54,7 @@ function make_kernel() {
 }
 
 function make_dtb() {
+  rm arch/arm/boot/dt.img
   make dtbs "${THREAD}"
   "${KERNEL_DIR}/dtbToolCM" -2 -o "${KERNEL_DIR}/arch/arm/boot/dt.img" -s 2048 -p "${KERNEL_DIR}/scripts/dtc/" "${KERNEL_DIR}/arch/arm/boot/dts/"
   [ -f "${KERNEL_DIR}/arch/arm/boot/dt.img" ] && cp -vr "${KERNEL_DIR}/arch/arm/boot/dt.img" "${REPACK_DIR}/dtb" || exit 1
