@@ -16,7 +16,7 @@ clear
 
 # Resources
 THREAD="-j$(($(nproc --all) * 2))"
-DEFCONFIG="lineageos_jalebi_defconfig"
+DEFCONFIG="caesium_defconfig"
 KERNEL="zImage"
 
 # Caesium Kernel Details
@@ -36,8 +36,8 @@ export KBUILD_BUILD_HOST=jarvisbox
 KERNEL_DIR=$(pwd)
 RESOURCE_DIR="${KERNEL_DIR}"
 ANYKERNEL_DIR="$RESOURCE_DIR/AnyKernel2"
-#TOOLCHAIN_DIR="/home/msfjarvis/git-repos/toolchains/arm-linux-gnueabi/"
-TOOLCHAIN_DIR="/home/msfjarvis/git-repos/toolchains/arm-eabi-4.9/"
+TOOLCHAIN_DIR="/home/msfjarvis/git-repos/toolchains/arm-linux-gnueabi/"
+#TOOLCHAIN_DIR="/home/msfjarvis/git-repos/toolchains/arm-eabi-4.9/"
 REPACK_DIR="$ANYKERNEL_DIR"
 ZIP_MOVE="$RESOURCE_DIR/out/"
 ZIMAGE_DIR="$KERNEL_DIR/arch/arm/boot"
@@ -129,7 +129,7 @@ done
 DATE_START=$(date +"%s")
 
 # TC tasks
-export CROSS_COMPILE=$TOOLCHAIN_DIR/bin/arm-eabi-
+export CROSS_COMPILE=$TOOLCHAIN_DIR/bin/arm-linux-gnueabi-
 export LD_LIBRARY_PATH=$TOOLCHAIN_DIR/lib/
 cd "${KERNEL_DIR}"
 
