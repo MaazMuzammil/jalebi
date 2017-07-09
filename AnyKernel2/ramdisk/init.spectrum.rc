@@ -37,7 +37,6 @@ on property:persist.spectrum.profile=0
     write /sys/module/cpu_boost/parameters/input_boost_ms 0
     write /sys/module/msm_thermal/parameters/core_limit_temp_degC 55
     write /sys/module/msm_thermal/parameters/temp_threshold 60
-    write /sys/module/msm_thermal/parameters/core_control/enabled 0
     write /sys/module/msm_thermal/parameters/enabled Y
 
 # Battery
@@ -86,7 +85,6 @@ on property:persist.spectrum.profile=2
     write /sys/block/mmcblk0/queue/scheduler 'noop'
     write /sys/module/msm_thermal/parameters/core_limit_temp_degC 55
     write /sys/module/msm_thermal/parameters/temp_threshold 60
-    write /sys/module/msm_thermal/parameters/core_control/enabled 1
     write /sys/module/msm_thermal/parameters/enabled Y
 
 # Gaming
@@ -136,6 +134,5 @@ on property:persist.spectrum.profile=3
     write /proc/sys/kernel/random/write_wakeup_threshold 4096
     write /proc/sys/kernel/random/read_wakeup_threshold 4096
     write /sys/module/sync/parameters/fsync_enabled N
-    write /sys/module/msm_thermal/parameters/core_control/enabled 0
     write /sys/module/msm_thermal/parameters/enabled 0
 
