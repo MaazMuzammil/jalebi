@@ -1,7 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 10
 SUBLEVEL = 107
-EXTRAVERSION = -Caesium-jalebi-v0.1
+EXTRAVERSION = -Caesium-jalebi-v0.2
 NAME = TOSSUG Baby Fish
 
 # *DOCUMENTATION*
