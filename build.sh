@@ -24,6 +24,8 @@ VER="-$(date +"%Y%m%d"-"%H%M%S")-$VER"
 DEVICE="-jalebi"
 FINAL_VER="${KERNEL_NAME}""${DEVICE}""${VER}"
 
+echo $FINAL_VER > $(pwd)/.final_ver
+
 # Vars
 export ARCH=arm
 export SUBARCH=arm
