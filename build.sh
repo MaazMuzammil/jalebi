@@ -47,6 +47,7 @@ function make_kernel() {
   rm arch/arm/boot/zImage
   [ "${CLEAN}" ] && make clean
   make "${DEFCONFIG}" "${THREAD}"
+  [ "${REGEN_DEFCONFIG}" ] && cp .config arch/"${ARCH}"/configs/"${DEFCONFIG}" && exit 1
   if [ "${MODULE}" ]; then
       make "${MODULE}" "${THREAD}"
   else
@@ -91,7 +92,7 @@ function push_and_flash() {
   adb shell twrp install "/external_sd/Caesium/${FINAL_VER}.zip"
 }
 
-while getopts ":ctabfm:" opt; do
+while getopts ":ctabfrm:" opt; do
   case $opt in
     c)
       echo -e "${cyan} Building clean ${restore}" >&2
@@ -112,6 +113,10 @@ while getopts ":ctabfm:" opt; do
     f)
       echo -e "${cyan} Will auto-flash kernel ${restore}" >&2
       FLASH=true
+      ;;
+    r)
+      echo -e "${cyan} Regenerating defconfig ${restore}" >&2
+      REGEN_DEFCONFIG=true
       ;;
     m)
       MODULE="${OPTARG}"
