@@ -19,7 +19,7 @@ KERNEL="zImage"
 
 # Caesium Kernel Details
 KERNEL_NAME="Caesium"
-VER="v1.0"
+VER="v1.1"
 VER="-$(date +"%Y%m%d"-"%H%M%S")-$VER"
 DEVICE="-jalebi"
 FINAL_VER="${KERNEL_NAME}""${DEVICE}""${VER}"
